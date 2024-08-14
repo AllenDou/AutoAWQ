@@ -82,6 +82,7 @@ TRANSFORMERS_AUTO_MAPPING_DICT = {
     "cohere": "AutoModelForCausalLM",
     "deepseek_v2": "AutoModelForCausalLM",
     "minicpm": "AutoModelForCausalLM",
+    "xlm-roberta": "XLMRobertaForSequenceClassification",
 }
 
 
@@ -266,6 +267,7 @@ class BaseAWQForCausalLM(nn.Module):
             str, Doc("The shard size for sharding large models into multiple chunks.")
         ] = "5GB",
     ):
+        import pdb; pdb.set_trace()
         save_dir = save_dir[:-1] if save_dir[-1] == "/" else save_dir
 
         # Save model
@@ -278,7 +280,7 @@ class BaseAWQForCausalLM(nn.Module):
 
         # Save model and config files with empty state dict
         self.model.config.quantization_config = self.quant_config.to_transformers_dict()
-        self.model.generation_config.do_sample = True
+        #self.model.generation_config.do_sample = True
         self.model.save_pretrained(save_dir, state_dict=EmptyModule().state_dict())
 
         # Vision transformers have a processor
